@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"os"
 	"os/exec"
 	"regexp"
 	"strings"
@@ -42,10 +43,11 @@ type PackageUpdate struct {
 }
 
 func main() {
-	// _ = version.Compare("1.0.0", "1.2.0", ">")
-
-	// fmt.Println(getPackageVersion("plex"))
-	// return
+	// check if nixpkgsPath exists
+	if _, err := os.Stat(nixpkgsPath); os.IsNotExist(err) {
+		fmt.Printf("The specified nixpkgs path does not exists '%s'\n", nixpkgsPath)
+		return
+	}
 
 	prs, _ := getPRsList()
 	pkgList := make(map[string][]*PullRequest)
